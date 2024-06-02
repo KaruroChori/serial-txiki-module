@@ -1,0 +1,26 @@
+{
+  "$schema": "https://github.com/KaruroChori/txiki-modules/releases/download/v2.1.0/module.schema.json",
+  "suggested-name": "serial",
+  "module-version": [2, 1, 0],
+  "runtime-version": [0, 4, 1],
+  "native-deps": {
+    "lvgl": {
+      "repo": "https://github.com/lvgl/lvgl",
+      "branch": "release/v8.4",
+      "env": {
+        "VARA": { "type": "STRING", "value": "\"Hello\"" }
+      }
+    },
+    "lv_drivers": {
+      "repo": "https://github.com/lvgl/lv_drivers",
+      "branch": "master",
+      "env": {
+        "VARA2": { "type": "STRING", "value": "\"World\"", "force": true }
+      }
+    }
+  },
+  "module-deps": {
+    "typebox": "https://github.com/KaruroChori/typebox-txiki-module/releases/download/v0.32.31/module.tar.gz",
+    "commander": "https://github.com/KaruroChori/commander-txiki-module/releases/download/v12.1.0/module.tar.gz"
+  }
+}

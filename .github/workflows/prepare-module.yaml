@@ -1,0 +1,29 @@
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
+
+name: Upload Distribution package
+
+jobs:
+  build:
+    permissions: write-all
+    name: Upload Release Asset
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: antongolub/action-setup-bun@v1.13.2
+      - name: Build dist
+        run: |
+          bun install
+          bun run runtime-types
+          bun run bundle
+          tar -czvf module.tar.gz dist
+      - name: Add artifact
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            module.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "typeRoots": ["./node_modules/@types", "./runtime/docs"],
+    "types": [
+      "node",
+      "./types/extras/typebox.d.ts",
+      "./types/extras/commander.d.ts"
+    ]
+  }
+}

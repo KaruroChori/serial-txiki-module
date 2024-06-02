@@ -1,0 +1,21 @@
+{
+  "name": "serial-txiki-module",
+  "version": "1.0.0",
+  "description": "Serial module for txiki.js",
+  "type": "module",
+  "packageManager": "bun@1.1.4",
+  "scripts": {
+    "runtime-types": "bun ./scripts/runtime.ts fast-clone",
+    "bundle": "bun ./scripts/bundle.ts",
+    "dev:setup": "rm -rf build && meson setup build --reconfigure",
+    "dev:build": "cd build && meson compile",
+    "dev:test": "cd build && meson test"
+  },
+  "author": "karurochari",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bun": "^1.1.0",
+    "commander": "^12.1.0",
+    "dts-bundle-generator": "^9.5.1"
+  }
+}
