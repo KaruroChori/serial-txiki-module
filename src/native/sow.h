@@ -26,5 +26,5 @@ struct cfg_serial {
 };
 
 
-int configure(const char* path, const cfg_serial& cfg);
+int __MODULE___configure(const char* path, const cfg_serial& cfg);
 

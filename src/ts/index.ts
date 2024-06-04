@@ -22,11 +22,18 @@ type serial_cfg_t = Static<typeof serial_cfg_schema>
 const core = globalThis[Symbol.for('tjs.internal.core')];
 
 export function open(file: string, cfg: serial_cfg_t) {
+    console.log("BANANA")
     const pcfg = Value.Default(serial_cfg_schema, cfg)
     //@ts-ignore
-    const fd = core.$__MODULE__.configure(file, cfg)
-    return tjs.PosixSocket.createFromFD(fd);
-
+    const fd = core.$__MODULE__.configure(file, {
+        ...cfg,
+        ispeed: (typeof cfg.ispeed === "number") ? cfg.ispeed : Number.parseInt(cfg.ispeed.substring(1)),
+        ospeed: (typeof cfg.ospeed === "number") ? cfg.ospeed : Number.parseInt(cfg.ospeed.substring(1))
+    })
+    if(fd!==-1){
+        return core.newStdioFile(file,fd);
+    }
+    else throw new Error(`Unable to use serial connection with [${file}]`);
 }
 
 export {

@@ -21,17 +21,30 @@
 #include <sys/file.h>
 
 
-int configure(const char* path, const cfg_serial& cfg){
+int __MODULE___configure(const char* path, const cfg_serial& cfg){
+    printf(
+        "Opening [%s] with cfg {parity:%i,stop:%i,bits:%i,hardware_flow:%i,vtime:%i,vmin:%i,ispeed:%i,ospeed:%i}\n",
+        path,
+        (uint8_t)cfg.parity,
+        (uint8_t)cfg.stop,
+        (uint8_t)cfg.bits,
+        (uint8_t)cfg.hardware_flow,
+        (uint8_t)cfg.vtime,
+        (uint8_t)cfg.vmin,
+        cfg.ispeed,
+        cfg.ospeed
+    );
+
     int serial_port = open(path, O_RDWR);
 
     if (serial_port < 0) {
-        printf("Error %i from open: %s\n", errno, strerror(errno));
+        fprintf(stderr,"Error %i from open: %s\n", errno, strerror(errno));
         return -1;
     }
 
     termios2 tty;
     if(ioctl(serial_port, TCGETS2, &tty) != 0) {
-        printf("Error %i from ioctl: %s\n", errno, strerror(errno));
+        fprintf(stderr,"Error %i from ioctl: %s\n", errno, strerror(errno));
         return -1;
     }
 
@@ -86,16 +99,16 @@ int configure(const char* path, const cfg_serial& cfg){
     tty.c_ospeed = cfg.ospeed;
 
     if(ioctl(serial_port, TCSETS2, &tty) != 0) {
-        printf("Error %i from ioctl: %s\n", errno, strerror(errno));
+        fprintf(stderr,"Error %i from ioctl: %s\n", errno, strerror(errno));
     }
 
     if(ioctl(serial_port, TIOCEXCL) != 0) {
-        printf("Error %i from ioctl: %s\n", errno, strerror(errno));
+        fprintf(stderr,"Error %i from ioctl: %s\n", errno, strerror(errno));
         return -1;
     }
 
     if(flock(serial_port, LOCK_EX | LOCK_NB) == -1) {
-        printf("Error %i from flock: %s\n", errno, strerror(errno));
+        fprintf(stderr,"Error %i from flock: %s\n", errno, strerror(errno));
         return -1;
     }
 
