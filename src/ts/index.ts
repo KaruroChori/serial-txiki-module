@@ -1,5 +1,6 @@
 
-import { Type as t, type Static } from "tjs:typebox"
+import { Type as t, type Static, Value } from "tjs:typebox"
+
 
 const speeds_t = t.Union([
     t.Integer(),
@@ -15,12 +16,19 @@ const serial_cfg_schema = t.Object({
     vmin: t.Integer({ default: 0 }),
     ispeed: speeds_t,
     ospeed: speeds_t
-});
+}, { additionalProperties: false });
 type serial_cfg_t = Static<typeof serial_cfg_schema>
 
-export function configure(file: string, cfg: serial_cfg_t) { }
+const core = globalThis[Symbol.for('tjs.internal.core')];
 
+export function open(file: string, cfg: serial_cfg_t) {
+    const pcfg = Value.Default(serial_cfg_schema, cfg)
+    //@ts-ignore
+    const fd = tjs.__MODULE__configure(file, cfg)
+    return tjs.PosixSocket.createFromFD(fd);
+
+}
 
 export {
-    serial_cfg_schema
+    serial_cfg_schema, type serial_cfg_t,
 }

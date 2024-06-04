@@ -5,6 +5,6 @@
   "runtime-version": [0, 4, 1],
   "native-deps": {},
   "module-deps": {
-    "typebox": "https://github.com/KaruroChori/typebox-txiki-module/releases/download/v0.32.31/module.tar.gz"
+    "typebox": "https://github.com/KaruroChori/typebox-txiki-module/releases/download/v0.32.31-rev2/module.tar.gz"
   }
 }
