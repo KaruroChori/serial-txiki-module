@@ -24,7 +24,7 @@ const core = globalThis[Symbol.for('tjs.internal.core')];
 export function open(file: string, cfg: serial_cfg_t) {
     const pcfg = Value.Default(serial_cfg_schema, cfg)
     //@ts-ignore
-    const fd = tjs.__MODULE__configure(file, cfg)
+    const fd = core.$__MODULE__.configure(file, cfg)
     return tjs.PosixSocket.createFromFD(fd);
 
 }

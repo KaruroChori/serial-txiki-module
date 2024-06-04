@@ -6,16 +6,6 @@
 
 #include <cstdint>
 
-#include <fcntl.h> // Contains file controls like O_RDWR
-#include <errno.h> // Error integer and strerror() function
-
-//I am going to use a less portable, but more flexible option.
-//#include <termios.h> // Contains POSIX terminal control definitions
-
-#include <asm/termbits.h> 
-#include <sys/ioctl.h> // Used for TCGETS2/TCSETS2, which is required for custom baud rates
-
-#include <sys/file.h>
 
 enum class feature_t : uint8_t {DISABLED, ENABLED};
 enum class stop_t : uint8_t  {ONE_BIT, TWO_BITS};
@@ -37,3 +27,4 @@ struct cfg_serial {
 
 
 int configure(const char* path, const cfg_serial& cfg);
+

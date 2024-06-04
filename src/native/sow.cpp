@@ -4,16 +4,35 @@
 #include <cstring>
 #include "sow.h"
 
+
+#include <fcntl.h> // Contains file controls like O_RDWR
+#include <errno.h> // Error integer and strerror() function
+
+//I am going to use a less portable, but more flexible option.
+//#include <termios.h> // Contains POSIX terminal control definitions
+
+//DIRTY FIX to avoid conflicts in the `termios` label with another header used deep in the dependencies of txiki.
+#define termios __termios
+#include <asm/termbits.h> 
+#undef termios
+
+#include <sys/ioctl.h> // Used for TCGETS2/TCSETS2, which is required for custom baud rates
+
+#include <sys/file.h>
+
+
 int configure(const char* path, const cfg_serial& cfg){
     int serial_port = open(path, O_RDWR);
 
     if (serial_port < 0) {
         printf("Error %i from open: %s\n", errno, strerror(errno));
+        return -1;
     }
 
     termios2 tty;
     if(ioctl(serial_port, TCGETS2, &tty) != 0) {
         printf("Error %i from ioctl: %s\n", errno, strerror(errno));
+        return -1;
     }
 
     //Parity
@@ -71,13 +90,13 @@ int configure(const char* path, const cfg_serial& cfg){
     }
 
     if(ioctl(serial_port, TIOCEXCL) != 0) {
-        throw std::runtime_error("Serial port with file descriptor " + 
-            std::to_string(serial_port) + " is usable to be locked.");
+        printf("Error %i from ioctl: %s\n", errno, strerror(errno));
+        return -1;
     }
 
     if(flock(serial_port, LOCK_EX | LOCK_NB) == -1) {
-        throw std::runtime_error("Serial port with file descriptor " + 
-            std::to_string(serial_port) + " is already locked by another process.");
+        printf("Error %i from flock: %s\n", errno, strerror(errno));
+        return -1;
     }
 
     return serial_port;
