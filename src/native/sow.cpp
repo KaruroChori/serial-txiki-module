@@ -21,7 +21,9 @@
 #include <sys/file.h>
 
 
-int __MODULE___configure(const char* path, const cfg_serial& cfg){
+namespace __MODULE__{
+
+int configure(const char* path, const cfg_serial& cfg){
     printf(
         "Opening [%s] with cfg {parity:%i,stop:%i,bits:%i,hardware_flow:%i,vtime:%i,vmin:%i,ispeed:%i,ospeed:%i}\n",
         path,
@@ -113,4 +115,6 @@ int __MODULE___configure(const char* path, const cfg_serial& cfg){
     }
 
     return serial_port;
+}
+
 }

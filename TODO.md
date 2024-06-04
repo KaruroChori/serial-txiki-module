@@ -1,0 +1,2 @@
+- [ ] ls to search for all available serials
+- [ ] reconfiguration of the serial 

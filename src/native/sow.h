@@ -6,6 +6,7 @@
 
 #include <cstdint>
 
+namespace __MODULE__{
 
 enum class feature_t : uint8_t {DISABLED, ENABLED};
 enum class stop_t : uint8_t  {ONE_BIT, TWO_BITS};
@@ -26,5 +27,6 @@ struct cfg_serial {
 };
 
 
-int __MODULE___configure(const char* path, const cfg_serial& cfg);
+int configure(const char* path, const cfg_serial& cfg);
 
+}

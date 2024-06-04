@@ -10,6 +10,7 @@ const speeds_t = t.Union([
 
 const serial_cfg_schema = t.Object({
     parity: t.Union([t.Literal("disabled"), t.Literal("enabled")], { default: 'disabled' }),
+    bits: t.Union([t.Literal(5), t.Literal(6), t.Literal(7), t.Literal(8)], { default: 8 }),
     stop: t.Union([t.Literal(1), t.Literal(2)], { default: 1 }),
     hardware_flow: t.Union([t.Literal("disabled"), t.Literal("enabled")], { default: 'enabled' }),
     vtime: t.Integer({ default: 0 }),
