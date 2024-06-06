@@ -9,21 +9,20 @@ const speeds_t = t.Union([
     t.Literal('B115200'), t.Literal('B230400'), t.Literal('B460800')], { default: 'B9600' });
 
 const serial_cfg_schema = t.Object({
-    parity: t.Union([t.Literal("disabled"), t.Literal("enabled")], { default: 'disabled' }),
-    bits: t.Union([t.Literal(5), t.Literal(6), t.Literal(7), t.Literal(8)], { default: 8 }),
-    stop: t.Union([t.Literal(1), t.Literal(2)], { default: 1 }),
-    hardware_flow: t.Union([t.Literal("disabled"), t.Literal("enabled")], { default: 'enabled' }),
-    vtime: t.Integer({ default: 0 }),
-    vmin: t.Integer({ default: 0 }),
-    ispeed: speeds_t,
-    ospeed: speeds_t
+    parity: t.Optional(t.Union([t.Literal("disabled"), t.Literal("enabled")], { default: 'disabled' })),
+    bits: t.Optional(t.Union([t.Literal(5), t.Literal(6), t.Literal(7), t.Literal(8)], { default: 8 })),
+    stop: t.Optional(t.Union([t.Literal(1), t.Literal(2)], { default: 1 })),
+    hardware_flow: t.Optional(t.Union([t.Literal("disabled"), t.Literal("enabled")], { default: 'enabled' })),
+    vtime: t.Optional(t.Integer({ default: 0 })),
+    vmin: t.Optional(t.Integer({ default: 0 })),
+    ispeed: t.Optional(speeds_t),
+    ospeed: t.Optional(speeds_t)
 }, { additionalProperties: false });
 type serial_cfg_t = Static<typeof serial_cfg_schema>
 
 const core = globalThis[Symbol.for('tjs.internal.core')];
 
-export function open(file: string, cfg: serial_cfg_t) {
-    console.log("BANANA")
+export function open(file: string, cfg: serial_cfg_t) : tjs.FileHandle {
     const pcfg = Value.Default(serial_cfg_schema, cfg)
     //@ts-ignore
     const fd = core.$__MODULE__.configure(file, {
