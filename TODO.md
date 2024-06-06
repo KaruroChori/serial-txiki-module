@@ -1,2 +1,3 @@
-- [ ] ls to search for all available serials
+- [x] open a serial via file and lock it
+- [x] ls to search for all available serials
 - [ ] reconfiguration of the serial 

@@ -22,7 +22,13 @@ type serial_cfg_t = Static<typeof serial_cfg_schema>
 
 const core = globalThis[Symbol.for('tjs.internal.core')];
 
-export function open(file: string, cfg: serial_cfg_t) : tjs.FileHandle {
+/**
+ * Open a serial device and lock it.
+ * @param file the path for the file mapped serial.
+ * @param cfg the configuration of the serial.
+ * @returns a normal file handle. Just use it as you normally would.
+ */
+export function open(file: string, cfg?: serial_cfg_t) : tjs.FileHandle {
     const pcfg = Value.Default(serial_cfg_schema, cfg)
     //@ts-ignore
     const fd = core.$__MODULE__.configure(file, {
@@ -34,6 +40,19 @@ export function open(file: string, cfg: serial_cfg_t) : tjs.FileHandle {
         return core.newStdioFile(file,fd);
     }
     else throw new Error(`Unable to use serial connection with [${file}]`);
+}
+
+/**
+ * 
+ * @returns The list of available files mapping serial devices.
+ */
+export async function list() : Promise<string[]>{
+    const names = []
+    const dirIter = await tjs.readdir('/dev/serial/by-id/');
+    for await (const item of dirIter) {
+        names.push(`/dev/serial/by-id/${item.name}`);
+    }
+    return names;
 }
 
 export {
